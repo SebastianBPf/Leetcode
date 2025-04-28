@@ -1,8 +1,32 @@
 class Solution:
-    # score = [sum of num for num in nums] * len(nums)
+    # [1, 1, 1] did not work
     def countSubarrays(self, nums: List[int], k: int) -> int:
-        
-
+        # l, r = start, end
+        l, r = 0, 0
+        score = nums[l]
+        valid_subsets = 0
+        while r < len(nums):
+            while score < k:
+                valid_subsets += (r - l + 1)
+                # In the case of r = l = 0
+                # old length = 0 - 0 + 1 = 1
+                r += 1
+                if r < len(nums):
+                    score = (int(score / (r - l)) + nums[r]) * (r - l + 1)
+                else:
+                    break
+                
+            while score >= k:
+                if r == l:
+                    if l + 1 < len(nums):
+                        score = nums[l + 1]
+                    else:
+                        return valid_subsets
+                    r = max(l + 1, r)
+                else:
+                    score = (int(score / (r - l + 1)) - nums[l]) * (r - l)
+                l += 1 
+        return valid_subsets
     
     
     
