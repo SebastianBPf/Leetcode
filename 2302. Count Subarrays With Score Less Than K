@@ -1,0 +1,49 @@
+class Solution:
+    # score = [sum of num for num in nums] * len(nums)
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        
+
+    
+    
+    
+    
+    
+    
+    
+# O(N^2) ineffecient solution
+# def countSubarrays(self, nums: List[int], k: int) -> int:
+#     num_arrays = 0
+#     for i, first_num in enumerate(nums):
+#         if first_num < k:
+#             j = i + 1
+#             score = first_num
+#             while score < k:
+#                 num_arrays += 1
+#                 if j >= len(nums):
+#                     break
+#                 # previous length = j - i 
+#                 score = (int(score / (j - i)) + nums[j]) * (j - i + 1)
+#                 j += 1
+#     return num_arrays
+
+
+
+#[....] [x]
+# [1,2,3]: score = 18 k = 50 
+# [1,2,3,4]: score = 40 k = 50
+
+#[4], [3,4], [2,3,4], [1,2,3,4] Must ALL be valid as well if [1,2,3,4] is a valid subset.
+# What would the starting and ending indexes be in this case? They would start = 0, end = 3
+# If we want to add all the subsets that we jsut discovered were valid by adding '4', that means we would
+# just add (end - start + 1)
+# essentially meaning that we add another (end - start + 1) valid subsets to the solution 
+
+# If we know [1, 2, 3] is a valid subset, AND [1, 2, 3, 4] is a va;id subset, then all subset
+# MUST be valid as well. We have already counted all subsets of [1, 2, 3] in this case, which means we only
+# need to add the subsets including '4', which will ALWAYS be (end - start + 1)
+
+# [1, 2, 3] valid subsets of this IF it is valid are [1], [2], [3], [1,2], [2,3], [1, 2, 3]
+# [1, 2, 3, 4] vaid subsets are:                     [1], [2], [3], [1,2], [2,3], [1, 2, 3], [4]
+#                                                    [3, 4], [2, 3, 4], [1, 2, 3, 4]
+# Which is why the new number of valid subsets is equal to:
+# previous_number_of_valid_subsets + (end - start + 1)
