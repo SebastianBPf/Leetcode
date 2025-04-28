@@ -1,0 +1,79 @@
+----------------------- Efficient Solution -----------------------
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        house1, house2 = 0,0
+          for num in nums:
+              temp = house2
+              # if nums = [1, 2, 3]
+              # house 1 = 1, house 2 = 2
+              house2 = max(house1 + num, house2)
+              house1 = temp
+          return house2
+
+
+-----------------------Original Solution-----------------------
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        # nums [1, 2, 3, 4]
+        # lets look at the smallest case possible
+        # nums = [1], what is the max amount of money that we can rob,
+        # it has to be 1, since that is the only house we can choose. 
+
+        # nums = [1, 2] what is the max amount of money that we can rob
+        # it has to be 2, since 2 > 1m so you rob the second house
+        # NOTE: this is the same, regardless of order, so [2, 1] would still have the max of 2 
+
+
+        # nums = [2, 5, 4], lets break up the sub problems:
+        # dp[0] = [2]: max value is 2
+        # dp[1] = [2,5], max value is 5 because 5 > 2
+        # dp[2] = max(dp[0] + nums[2], dp[1])
+
+        # dp[n] = max(dp[n -2] + nums[n], dp[n -1])
+
+        # house1, house2 = 0,0
+        # for num in nums:
+        #     temp = house2
+        #     # if nums = [1, 2, 3]
+        #     # house 1 = 1, house 2 = 2
+        #     house2 = max(house1 + num, house2)
+        #     house1 = temp
+        # return house2
+
+
+
+        for i in range(len(nums)):
+            if not i:
+                dp[i] = nums[i]
+            elif i == 1:
+                    dp[i] = max(nums[0], nums[1])
+            else:
+                    dp[i] = max(dp[i -2] + nums[i], dp[i - 1])
+            return dp[-1]
+
+        # prev1, prev2 = 0,0
+        # for x in nums:
+        #     curr = max(prev1, prev2 + x)
+        #     prev2 = prev1
+        #     prev1 = curr
+        # return prev1
+
+
+        # nums [2, 5, 4]
+        # before running: house1 == house2 == 0
+        # temp = house2 (is 0)
+        # house 2 = max(house1 + 2, house2) = max (0 + 2, 0) = 2
+        # house 1 = temp = 0 
+        # After first iteration: house2 = 2, house 1 = 0
+
+        #temp = house2 = 2
+        # house2 = max(house1 + num, house2) = max(0 + 5, 2)
+        # hosue1 = temp = 2
+        # After second iteration house2 = 5, house1 = 2
+
+        # temp = house2 = 5
+        # house2 = max(house 1 + num, house2) = max(2 + 4, 5) = max(6, 5) = 6
+        # house1 = temp = 5
+        # final solution is house2 = 6
+
